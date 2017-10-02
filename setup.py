@@ -11,7 +11,7 @@ with open("VERSION.txt") as versionfile:
         author="Georg Felbinger",
         author_email="gfelbing@github.com",
         license="GPLv3",
-        packages=[],
+        packages=['pandoc_compose'],
         scripts=['bin/pandoc-compose'],
         zip_safe=False,
         install_requires=['argparse'],
