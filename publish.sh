@@ -19,5 +19,6 @@ git tag "$GIT_TAG"
 echo "done."
 
 echo -n "Pushing current branch and tag..."
+git push
 git push --tags
 echo "done."
