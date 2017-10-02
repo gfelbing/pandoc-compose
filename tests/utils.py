@@ -9,12 +9,14 @@ class TestUtils(unittest.TestCase):
             "string": "foo",
             "s": "bar",
             "flag": True,
-            "f": False,
+            "useless": False,
+            "f": True,
         }
         expected = [
             "--string foo",
             "-s bar",
             "--flag",
+            '',
             "-f"
         ]
 

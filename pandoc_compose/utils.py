@@ -4,6 +4,8 @@ def create_pandoc_opt(config):
     if isinstance(value, list):
         value = " ".join(map(str, sorted(value)))
     if isinstance(value, bool):
+        if not value:
+            return ""
         value = ""
 
     if len(key) == 1:
