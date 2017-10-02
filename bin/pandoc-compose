@@ -25,7 +25,6 @@ def args():
         "-d", "--dry-run",
         action='store_true'
     )
-    parser.add_argument("-i", dest="files", default=[], action="append")
     return parser
 
 
