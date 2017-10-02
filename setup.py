@@ -14,5 +14,9 @@ with open("VERSION.txt") as versionfile:
         packages=[],
         scripts=['bin/pandoc-compose'],
         zip_safe=False,
-        install_requires=['argparse']
+        install_requires=['argparse'],
+        data_files=[
+            'VERSION.txt',
+            'README.md'
+        ]
     )
