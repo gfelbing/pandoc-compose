@@ -1,0 +1,71 @@
+#!/bin/python3
+
+import argparse as arg
+import glob
+import logging
+import os
+import yaml
+import pandoc_compose.utils as utils
+
+logging.basicConfig(format='[%(asctime)-15s][%(levelname)s][%(name)s]: %(message)s')
+log = logging.getLogger('pandoc-compose')
+
+
+def args():
+    parser = arg.ArgumentParser(description="Create and run a fully configured pandoc command.")
+    parser.add_argument(
+        "-f", "--file",
+        default="pandoc-compose.yaml"
+    )
+    parser.add_argument(
+        "-v", "--verbose",
+        action='store_true'
+    )
+    parser.add_argument(
+        "-d", "--dry-run",
+        action='store_true'
+    )
+    parser.add_argument("-i", dest="files", default=[], action="append")
+    return parser
+
+
+if __name__ == "__main__":
+    opts = args().parse_args()
+    try:
+        with open(opts.file) as compose_file:
+            config = yaml.load(compose_file)
+            path = os.path.realpath(os.path.dirname(opts.file))
+            files = map(
+                sorted,
+                map(
+                    glob.glob,
+                    map(
+                        lambda f: os.path.join(path, f),
+                        config.pop("files")
+                    )
+                )
+            )
+
+            files = [i for sublist in files for i in sublist]
+
+            pandoc_options = list(map(utils.create_pandoc_opt, config.items()))
+
+            if opts.verbose:
+                pandoc_options = ["--verbose"] + pandoc_options
+
+            command = "pandoc {} {}".format(
+                " ".join(pandoc_options),
+                " ".join(files)
+            )
+
+            if (opts.verbose):
+                print("Working dir: {}".format(path))
+                print("Found files: \n- {}".format("\n- ".join(files)))
+                print("Command: '{}'".format(command))
+
+            if not opts.dry_run:
+                os.system("cd {} && {}".format(path, command))
+
+    except FileNotFoundError as e:
+        log.error("Could not find compose file.")
+        log.error(e)
