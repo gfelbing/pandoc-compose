@@ -14,6 +14,6 @@ with open("VERSION.txt") as versionfile:
         packages=['pandoc_compose'],
         scripts=['bin/pandoc-compose'],
         zip_safe=False,
-        install_requires=['argparse'],
+        install_requires=['argparse', 'pyyaml'],
         include_package_data=True
     )
