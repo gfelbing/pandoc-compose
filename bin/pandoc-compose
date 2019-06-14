@@ -32,7 +32,7 @@ if __name__ == "__main__":
     opts = args().parse_args()
     try:
         with open(opts.file) as compose_file:
-            config = yaml.load(compose_file)
+            config = yaml.load(compose_file, Loader=yaml.SafeLoader)
             path = os.path.realpath(os.path.dirname(opts.file))
             files = map(
                 sorted,
